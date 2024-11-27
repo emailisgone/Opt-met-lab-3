@@ -9,7 +9,7 @@ def simplex(obj: Optimization, x0, initStep=0.025, stepCoeff=1.025, eps=1e-4, al
     for i in range(n):
         xTemp = x0.copy()
         if xTemp[i] == 0:
-            xTemp[i] = initStep
+            xTemp[i] += initStep
         else:
             xTemp[i] *= stepCoeff
         pond.append(xTemp)
