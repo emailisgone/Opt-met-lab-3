@@ -10,7 +10,7 @@ def penalty(obj: Optimization, x, r):
 
     return obj.f(x) + (1/r)*bX
 
-def minPen(obj: Optimization, x0, initR=100, rDec=0.5, eps=1e-4, maxIter=1000, maxOutIter=100):
+def minPen(obj: Optimization, x0, initR=10, rDec=0.5, eps=1e-4):
     # r - baudos koeficientas
     # maxOutIter - maksimalus sk. kartu kiek dalinam r pusiau, UNLESS minimum is found
     results = {
@@ -23,14 +23,14 @@ def minPen(obj: Optimization, x0, initR=100, rDec=0.5, eps=1e-4, maxIter=1000, m
     currX = x0
     r = initR
 
-    for i in range(maxOutIter):
+    while True:
         class PenaltyObjectiveFunction:
             def f(self, x):
                 return penalty(obj, x, r)
 
         penaltyObjFunc = PenaltyObjectiveFunction()
 
-        solution, funcVal, iterations = simplex(penaltyObjFunc, currX, eps=eps, maxIter=maxIter)
+        solution, funcVal, iterations = simplex(penaltyObjFunc, currX)
 
         results["solutions"].append(solution)
         results["funcVals"].append(funcVal)

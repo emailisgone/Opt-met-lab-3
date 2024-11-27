@@ -1,6 +1,6 @@
 from optfunc import Optimization
 
-def simplex(obj: Optimization, x0, initStep=0.025, stepCoeff=1.025, eps=1e-4, alpha=1, gamma=2, rho=0.5, maxIter=1000):
+def simplex(obj: Optimization, x0, initStep=0.025, stepCoeff=1.025, eps=1e-4, alpha=1, gamma=2, rho=0.5):
     n = len(x0)
     pond = [x0]
     fVals = [obj.f(x0)]
@@ -15,7 +15,7 @@ def simplex(obj: Optimization, x0, initStep=0.025, stepCoeff=1.025, eps=1e-4, al
         pond.append(xTemp)
         fVals.append(obj.f(xTemp))
 
-    while True and it < maxIter:
+    while True:
         it += 1
 
         sortedInd = sorted(range(len(fVals)), key=lambda i: fVals[i])
