@@ -1,3 +1,4 @@
+from imports import np
 from optfunc import Optimization
 from simplex import simplex
 
@@ -10,40 +11,40 @@ def penalty(obj: Optimization, x, r):
 
     return obj.f(x) + (1/r)*bX
 
-def minPen(obj: Optimization, x0, initR=10, rDec=0.9, eps=1e-4):
-    # r - baudos koeficientas
-    # maxOutIter - maksimalus sk. kartu kiek dalinam r pusiau, UNLESS minimum is found
+def minPen(obj: Optimization, x0, initR=10, eps=1e-6):
+    # initR - baudos koeficientas
     results = {
-        "solutions": [],
+        "points": [],
         "funcVals": [],
         "niter": [],
         "neval": []
     }
 
+    class PenaltyObjectiveFunction:
+        def f(self, x):
+            return penalty(obj, x, r)
+
+    penaltyObjFunc = PenaltyObjectiveFunction()
     currX = x0
     r = initR
 
     while True:
-        class PenaltyObjectiveFunction:
-            def f(self, x):
-                return penalty(obj, x, r)
+        point, funcVal, iterations = simplex(penaltyObjFunc, currX)
 
-        penaltyObjFunc = PenaltyObjectiveFunction()
-
-        solution, funcVal, iterations = simplex(penaltyObjFunc, currX)
-
-        results["solutions"].append(solution)
+        results["points"].append(point)
         results["funcVals"].append(funcVal)
         results["niter"].append(iterations)
         results["neval"].append(Optimization.counter)
 
-        if sum([obj.g(solution)**2] + [max(0, h)**2 for h in obj.h(solution)]) < eps:
+        if sum([obj.g(point)**2]+[max(0, h)**2 for h in obj.h(point)])<eps:
             break
 
-        r *= rDec
+        if np.linalg.norm(np.array(point)-np.array(currX))<eps:
+            break
 
+        r *= 0.05
         obj.reset()
-        currX = solution
+        currX = point
 
     return results
 
