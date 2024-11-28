@@ -10,7 +10,7 @@ def penalty(obj: Optimization, x, r):
 
     return obj.f(x) + (1/r)*bX
 
-def minPen(obj: Optimization, x0, initR=10, rDec=0.5, eps=1e-4):
+def minPen(obj: Optimization, x0, initR=10, rDec=0.9, eps=1e-4):
     # r - baudos koeficientas
     # maxOutIter - maksimalus sk. kartu kiek dalinam r pusiau, UNLESS minimum is found
     results = {
