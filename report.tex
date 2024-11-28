@@ -53,7 +53,40 @@
 \clearpage
 
 \section{Įvadas}
+Savo ankstesniame laboratoriniame darbe gilinausi į optimizavimą be apribojimų. Kaip jau nustačiau, jo algoritmai be jokių apribojimų nagrinėja visą funkciją ir gali rasti minimumo tašką beveik bet kurioje jos vietoje. Šiame laboratoriniame darbe gilinsiuosi į netiesinį optimizavimą. Vėl susidursime su tam tikrais apribojimais, tačiau šį kartą jie bus pagrįsti tikra, realia problema, kitaip nei vienmačio optimizavimo atveju, kai apribojimai kyla iš pačių algoritmų intervalų pavidalu. Ir kaip ir ankstesnio laboratorinio darbo optimizavimo tipe, toliau veiksime daugiamatėje erdvėje.
 \section{Nagrinėjama problema}
+Kaip įprasta, apibrėžkime šiuo metu nagrinėjamą problemą:
+
+\textbf{Kokia turėtų būti stačiakampio gretasienio formos dėžė, kad vienetiniam paviršiaus plotui jos tūris būtų maksimalus?}
+
+Pati problema, palyginti su ankstesniu laboratoriniu darbu, nepasikeitė, tačiau optimizavimo, kitaip tariant, sprendimo būdas skirsis. Prieš tęsdami toliau, pažvelkime į išvadą, kurią gavau optimizavęs šį uždavinį be apribojimų: \textbf{dėžė turi būti kubas, kurio viena į kitą atgręžtų sienų plotų sumos, kurių yra 3, lygūs $\frac{1}{3}$ paviršiaus vieneto ploto, t.y $2ab = 2bc = 2ac = \frac{1}{3}$, kur a, b, c - atitinkamai ilgis, plotis ir aukštis.}
+
+Nors šis atsakymas ir yra teisingas, ar jis neskambėtų šiek tiek painiai, jei iš tikrųjų bandytume spręsti šią problemą realiame pasaulyje? Ar negalėtume rasti glaustesnio atsakymo, kuriame būtų tiesiai nurodytas konkretus dėžės ilgis, plotis ir aukštis? Netiesinis optimizavimas puikiai tinka tokio tipo problemoms spręsti. 
+
+Pirmiausia turėsime iš naujo apibrėžti tikslo funkciją, jei norime gauti daug glaustesnį atsakymą. Tačiau daug transformacijų atlikti nereikės, nes tūrio formulėje ($V = a\cdot b\cdot c$) yra viskas, ko mums reikia:
+\begin{equation}\label{eq:1}
+    f(X) = -(x_{0}\cdot x_{1}\cdot x_{2})
+\end{equation}
+kur $x_{0}$ - ilgis $a$, $x_{1}$ - plotis $b$, $x_{2}$ - dėžės aukštis $c$. Svarbu nepamiršti minuso ženklo, nes, norėdami rasti didžiausią tūrį, turėsime funkciją minimizuoti. 
+
+Dabar, kai turime tikslo funkciją, gali kilti klausimas, kodėl pasirinkome būtent netiesinį optimizavimą? Ar negalime rasti dėžės parametrų bet kuriuo kitu optimizavimo tipu? Tiesa, tikrai yra keletas sprendimo būdų, kaip gauti norimus rezultatus, tačiau, kaip minėjau anksčiau, netiesinis optimizavimas puikiai tinka dėl to, kad pačiame uždavinyje jau yra tam tikri apribojimai, kurių turime laikytis. Pažvelkime į juos.
+
+Pirmiausia - lygybinis apribojimas. Pagal užduotį norime rasti didžiausią reikšmę dėžutės ploto vienete, todėl galime sudaryti tokią funkciją $g_{i}(X)$, kuri užtikrintų, kad mūsų algoritmo pasirinktos reikšmės neišeitų iš ribų:
+\begin{equation}\label{eq:2}
+    g_{i}(X) = 2\cdot(x_{0}x_{1}+x_{0}x_{2}+x_{1}x_{2}) - 1
+\end{equation}
+
+Toliau - nelygybės apribojimas. Kadangi realiame gyvenime dėžutės ilgis, plotis ir aukštis negali būti neigiami, turime tokią nelygybę:
+\begin{equation*}
+    x_{0},x_{1},x_{2}\geq 0
+\end{equation*}
+Pagalvokime apie tai, kaip galime paversti šią nelygybę info funkcija. Pagal bendrąjį standartą žinome, kad funkcija bus tokio pavidalo - $h_i(x)\leq 0$, todėl belieka tik padauginti duotą nelygybę iš $-1$:
+\begin{equation}\label{eq:3}
+    h_{i}(X) = [-x_{0}, -x_{1}, -x_{2}]
+\end{equation}
+
+Taip Python kalba sukūriau savo pasirinktinę klasę, skirtą šios problemos tikslo (\ref{eq:1}) ir apribojimų (\ref{eq:2}), (\ref{eq:3}) funkcijoms:
+\inputpythonfile{optfunc.py}
 \section{Netiesinio programavimo optimizavimas ir jo algoritmas}
 \section{Rezultatai ir jų analyzė}
 \section{Išvada}

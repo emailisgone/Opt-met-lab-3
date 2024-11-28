@@ -42,7 +42,7 @@ def minPen(obj: Optimization, x0, initR=10, eps=1e-6):
         if np.linalg.norm(np.array(point)-np.array(currX))<eps:
             break
 
-        r *= 0.05
+        r *= 0.5
         obj.reset()
         currX = point
 
