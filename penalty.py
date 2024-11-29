@@ -17,7 +17,8 @@ def minPen(obj: Optimization, x0, initR=10, eps=1e-6):
         "points": [],
         "funcVals": [],
         "niter": [],
-        "neval": []
+        "neval": [],
+        "rVals": []
     }
 
     class PenaltyObjectiveFunction:
@@ -35,6 +36,7 @@ def minPen(obj: Optimization, x0, initR=10, eps=1e-6):
         results["funcVals"].append(funcVal)
         results["niter"].append(iterations)
         results["neval"].append(Optimization.counter)
+        results["rVals"].append(r)
 
         if sum([obj.g(point)**2]+[max(0, h)**2 for h in obj.h(point)])<eps:
             break
@@ -42,7 +44,7 @@ def minPen(obj: Optimization, x0, initR=10, eps=1e-6):
         if np.linalg.norm(np.array(point)-np.array(currX))<eps:
             break
 
-        r *= 0.5
+        r *= 0.25
         obj.reset()
         currX = point
 
