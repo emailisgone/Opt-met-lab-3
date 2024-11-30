@@ -116,7 +116,7 @@ $x_{0}$ - pradinis taškas, initR - baudos koeficientas, eps - tikslumo reikšm�
 
 Prieš pradėdamas pagrindinį ciklą, turėjau sukurti papildomą apgaubiančiąją klasę aplink baudų funkciją, nes mano simplekso algoritmo įgyvendinimas iš esmės nepasikeitė nuo to, kaip jis atrodė antrajame laboratoriniame darbe - jis vis dar kviečia tikslo funkciją per $f(X)$ metodą, kuris, nors ir yra baudos funkcijoje, pats savaime nėra pakankamas, kaip matyti iš jos įgyvendinimo.
 
-Pagrindiniame cikle iteracija po iteracijos konverguojame prie mažiausio taško, optimizuodami baudos funkcijos rezultatus simplekso algoritmu ir perpus sumažindami baudos koeficientą. Baudos koeficientas $r$ yra labai svarbus metodo dalis, nes jis reguliuoja, kaip stipriai tikslo funkcija yra „baudžiama“ už apribojimų pažeidimus. Didėjant $r$ reikšmei (arba mažėjant baudos narių svoriui), optimizavimo procesas tampa labiau orientuotas į tikslo funkcijos minimizavimą, tačiau gali ignoruoti apribojimus. Priešingai, mažėjant $r$, apribojimų pažeidimai yra stipriau baudžiami, o optimizavimo procesas daugiau dėmesio skiria sprendinių paieškai apribojimų apibrėžtoje srityje. 
+Pagrindiniame cikle iteracija po iteracijos konverguojame prie minimumo taško, optimizuodami baudos funkcijos rezultatus simplekso algoritmu ir perpus sumažindami baudos koeficientą. Baudos koeficientas $r$ yra labai svarbus metodo dalis, nes jis reguliuoja, kaip stipriai tikslo funkcija yra „baudžiama“ už apribojimų pažeidimus. Didėjant $r$ reikšmei (arba mažėjant baudos narių svoriui), optimizavimo procesas tampa labiau orientuotas į tikslo funkcijos minimizavimą, tačiau gali ignoruoti apribojimus. Priešingai, mažėjant $r$, apribojimų pažeidimai yra stipriau baudžiami, o optimizavimo procesas daugiau dėmesio skiria sprendinių paieškai apribojimų apibrėžtoje srityje. 
 
 Galiausiai, algoritmas turės kažkaip sustoti, ir už tai atsakingi šie du sąlyginiai teiginiai:
 \begin{python}
@@ -235,6 +235,10 @@ Pažvelkime į šias minimumo taškų lenteles:
     \caption{Minimumo taškai, kai baudos koeficientas $r$ dauginamas iš $\frac{3}{4}$}
     \label{table:3}
 \end{table}
+
+Kaip ir tikėtasi, kuo lėčiau keičiasi baudos koeficientas $r$ (kuo daugiau kartų jis dalijamas), tuo tiksliau randami minimumo taškai. Įdomu tai, kad skirtingi pradiniai taškai neturi tokios didelės įtakos gautiems taškams, tik ties trečiuoju ar kartais net ketvirtuoju skaitmeniu po kalblelio jie pradeda šiek tiek skirtis.
+
+Dar vienas įdomus dalykas yra tai, kad jei pažvelgsime į visų lentelių besikeičiančius baudos koeficientus $r$, pastebėsime, kad visi skaičiavimai sustoja ties $r$ kažkur nuo 0.016 iki 0.0195, vadinasi, ideali $r$ reikšmė yra kažkur šiame intervale.
 \subsection{Funkcijos reikšmės}
 \begin{table}[H]
     \centering
@@ -336,7 +340,13 @@ Pažvelkime į šias minimumo taškų lenteles:
     \caption{Funkcijos reikšmės, kai baudos koeficientas $r$ dauginamas iš $\frac{3}{4}$}
     \label{table:6}
 \end{table}
+
+Kalbant apie funkcijos reikšmes, joms būdinga ta pati tendencija kaip ir minimumo taškams, tačiau skirtingi pradiniai taškai joms daro dar mažesnę įtaką, todėl bet koks reikšmingas skirtumas pastebimas tik po 6-ojo skaitmens po periodo, t. y. gerokai toliau nei mums svarbu.
+
+Be to, kaip minėta anksčiau, mūsų tikslas yra minimizuoti neigiamą tūrio funkciją, pakoreguotą baudos sąlygomis, kad maksimizuotume tūrį paviršiaus ploto vienete. Būtent todėl išvestas rezultatas yra neigiamas.
 \subsection{Greitis}
+Prieš analizuodami šiuos rezultatus prisiminkime greičio apibrėžimą optimizavimo kontekste: optimizavimo metodo algoritmo \textbf{greitis} - tai jo vidinių iteracijų kiekis, per kurį randamas tikslus minimumo taškas (arba intervalas, kuriame yra tas taškas ir kuris yra mažesnis už iš anksto nustatytą $\varepsilon$). Paprastai kuo mažiau iteracijų algoritmui reikia minėtam minimumo taškui pasiekti, tuo jis yra greitesnis. Svarbu nepamiršti, kad šiuo atveju iteracijos skaičiuojamos pagal tai, kiek jų reikia, kad simplekso algoritmas minimizuotų baudos funkciją esant tam tikram baudos koeficientui $r$.
+
 \begin{table}[H]
     \centering
     \resizebox{\linewidth}{!}{%
@@ -383,7 +393,7 @@ Pažvelkime į šias minimumo taškų lenteles:
           & 2.5        & 56                     & 61        & 58              \\
           & 1.25       & 53                     & 54        & 52              \\
           & 0.625      & 76                     & 75        & 77              \\
-          & 0,3125     & 52                     & 51        & 51              \\
+          & 0.3125     & 52                     & 51        & 51              \\
           & 0.15625    & 66                     & 64        & 60              \\
           & 0.078125   & 60                     & 58        & 62              \\
           & 0.0390625  & 61                     & 62        & 63              \\
@@ -438,7 +448,14 @@ Pažvelkime į šias minimumo taškų lenteles:
     \label{table:9}
 \end{table}
 
+Čia pradedame stebėti skirtumus ne tik dėl skirtingų pradinių taškų, bet ir dėl skirtingų $r$ reikšmių. 
+
+Aptarkime skirtingų taškų įtaką. Pirmiausia, kaip jau žinoma, kuo pradinis taškas arčiau minimumo, tuo mažiau iteracijų prireiks simpleksui jį rasti. Tačiau mūsų atveju pradinio taško padėtis tampa dar svarbesnė, nes atsižvelgiame į apribojimus. Jei pažvelgsime į gautus greičius (iteracijų kiekius), taškas (0, 0, 0) visada užima daugiausiai iteracijų iš pradžių. Taip yra dėl to, kad jis pažeidžia abu apribojimus ir tada baudos narys $b(x)$ reikšmingai prisideda prie tikslo funkcijos, priverčiant algoritmą praleisti daugiau iteracijų „taisant“ savo kelią, kad jis tenkintų tuos apribojimus.
+
+Dabar pagalvokime apie $r$ reikšmių įtaką. Iš pradžių gali pasirodyti, kad kuo ji mažesnė, tuo greičiau algoritmas suras minimumo tašką, tačiau, kaip galėjome pastebėti, kažkur link kiekvienos lentelės vidurio iteracijų skaičius staiga labai smarkiai padidėja ir vėl krenta. Kodėl taip yra? Grįžkime prie $r$ reikšmės svarbos. Baudos koeficientas $r$ kontroliuoja kompromisą tarp pagrindinės tikslo funkcijos $f(x)$ optimizavimo ir apribojimų $b(x)$ vykdymo. Kai $r$ yra per didelis, dominuoja baudos narys, todėl apribojimų vykdymas tampa pernelyg agresyvus. Tai gali iškreipti optimizavimo kraštovaizdį ir priversti algoritmą atlikti nereikalingus pataisymus, todėl padidėja iteracijų skaičius. Ir atvirkščiai, kai $r$ yra per mažas, baudos narys tampa nereikšmingas, ir algoritmas gali tyrinėti už įgyvendinamo regiono ribų, o tai sulėtina konvergavimą. Esant vidutinėms $r$ reikšmėms, optimizavimo uždavinį gali būti sunkiau išspręsti dėl to, kad $f(x)$ ir $b(x)$ derinys sukuria „nelygų“ kraštovaizdį, todėl algoritmui sunkiau efektyviai konverguoti. Simpleksas pakaitomis gerina $f(x)$ ir tenkina $b(x)$, todėl tyrimas tampa neefektyvus. Būtent taip atsitinka mūsų pavyzdyje ir todėl matome staigius šuolius ir kritimus net iki 150 iteracijų.
 \subsection{Efektyvumas}
+Prieš analizuodami šiuos rezultatus prisiminkime efektyvumo apibrėžimą optimizavimo kontekste: optimizavimo metodo algoritmo \textbf{efektyvumas} - tikslo funkcijos bei jos gradiento iškvietimų kiekis. Kuo mažiau kartų iškviečiame funkciją arba jos gradientą tam tikro taško reikšmei apskaičiuoti, tuo mažiau išteklių sunaudojame algoritmui vykdyti, vadinasi, tuo efektyviau naudoti tam tikrą metodą. Mūsų atveju svarbu pažymėti, kad skaičiuosime ne tik tikslo funkcijos, bet ir apribojimų funkcijų iškvietimus. Baudos funkcija nebus skaičiuojama, nes anksčiau minėtos trys vis tiek bus iškviestos iš jos.
+
 \begin{table}[H]
     \centering
     \resizebox{\linewidth}{!}{%
@@ -540,7 +557,30 @@ Pažvelkime į šias minimumo taškų lenteles:
     \label{table:12}
 \end{table}
 
+Apie efektyvumą nėra daug ką pasakyti, nes jis labai panašus į greičio rezultatų tendencijas - tiek pradiniai taškai, tiek baudos koeficientas $r$ daro panašią įtaką funkcijų iškvietimų kiekiui: pradinis taškas (0, 0, 0) yra mažiausiai efektyvus, o nepastovūs iškvietimų šuoliai yra kažkur arčiau lentelių vidurio.
 \section{Išvada}
-\section{Priedas}
+Apibendrinant, pagrindiniai šio laboratorinio darbo tikslai:
 
+\begin{itemize}
+    \item išanalizuoti pasirinkta netiesinio optimizavimo metodą - baudos: jo išvestus minimalius taškus, funkcijų reikšmes, iteracijų kiekį (greitį) ir funkcijų iškvietimų kiekį (efektyvumą); 
+    \item taikant anksčiau minėtą metodą, išspręsti šį optimizavimo uždavinį: \textbf{Kokia turėtų būti stačiakampio gretasienio formos dėžė, kad vienetiniam paviršiaus plotui jos tūris būtų maksimalus?};
+    \item pateikti išsamų atsakymą, kurį sudaro šios reikšmės: dėžės ilgis, plotis ir aukštis;
+\end{itemize}
+
+Po išsamios analizės galima pateikti atsakymą: \textbf{dėžė turi būti kubas, kurio kraštinių ilgis lygus maždaug 0.4084 matmens, suderinto su sąlyga, kad dėžės paviršiaus plotas yra vienetinis}.
+\section{Priedas}
+\lstinline|imports.py| failas:
+\inputpythonfile{imports.py}
+
+\lstinline|optfunc.py| failas:
+\inputpythonfile{optfunc.py}
+
+\lstinline|simplex.py| failas:
+\inputpythonfile{simplex.py}
+
+\lstinline|penalty.py| failas:
+\inputpythonfile{penalty.py}
+
+\lstinline|main.py| failas:
+\inputpythonfile{main.py}
 \end{document}
